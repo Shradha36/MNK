@@ -16,9 +16,9 @@ class TaskManager:
         self.filename = filename
         self.tasks = []
         self.load_tasks()
-
+    
+    # Load tasks from the file.
     def load_tasks(self):
-        """Load tasks from the file."""
         if os.path.exists(self.filename):
             with open(self.filename, 'r') as file:
                 try:
@@ -28,39 +28,39 @@ class TaskManager:
                     self.tasks = []
         else:
             self.tasks = []
-
+    
+    # Save tasks to the file.
     def save_tasks(self):
-        """Save tasks to the file."""
         tasks_data = [{'id': task.id, 'title': task.title, 'completed': task.completed} for task in self.tasks]
         with open(self.filename, 'w') as file:
             json.dump(tasks_data, file)
-
+    
+    # Add a new task.
     def add_task(self, title):
-        """Add a new task."""
         task_id = max([task.id for task in self.tasks], default=0) + 1  # Incremental ID
         new_task = Task(task_id, title)
         self.tasks.append(new_task)
         self.save_tasks()
-
+    
+    # View all tasks.
     def view_tasks(self):
-        """View all tasks."""
         if not self.tasks:
             print("No tasks available.")
         else:
             for task in self.tasks:
                 print(task)
 
+    # Delete a task by ID.
     def delete_task(self, task_id):
-        """Delete a task by ID."""
         task_to_remove = next((task for task in self.tasks if task.id == task_id), None)
         if task_to_remove:
             self.tasks.remove(task_to_remove)
             self.save_tasks()
         else:
             print(f"Task with ID {task_id} not found.")
-
+    
+    # Mark a task as completed.
     def mark_task_complete(self, task_id):
-        """Mark a task as completed."""
         task_to_mark = next((task for task in self.tasks if task.id == task_id), None)
         if task_to_mark:
             task_to_mark.completed = True
@@ -68,8 +68,8 @@ class TaskManager:
         else:
             print(f"Task with ID {task_id} not found.")
 
+    # Run the CLI interface.
     def run(self):
-        """Run the CLI interface."""
         while True:
             print("\nTask Manager")
             print("1. Add Task")
